@@ -1,19 +1,18 @@
 import { useState } from 'react';
-import { Api } from '../services/api'; // Import the Api object from your axios file
+import { Api } from '../services/api';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LoginPage = () => {
   const [credentials, setCredentials] = useState({
     username: '',
     password: '',
   });
-  const [message, setMessage] = useState('');
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setCredentials({ ...credentials, [name]: value });
   };
-
-  // Inside your login page component
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -22,21 +21,25 @@ const LoginPage = () => {
         { email: credentials.username, password: credentials.password },
         { headers: { 'Content-Type': 'application/json' } }
       );
-      console.log(response);
-      setMessage('Login successful!');
-      // Handle the response
+      const { access_token } = response.data;
+      localStorage.setItem('userToken', access_token);
+      toast.success('Login successful!');
     } catch (error) {
-      // Handle the error
-      setMessage('Login failed!');
+      if (error.response) {
+        const errorMessage = error.response.data.message;
+        toast.error(errorMessage);
+      } else {
+        toast.error('An error occurred. Please try again.');
+      }
     }
   };
 
   return (
-    <div className='flex items-center justify-center min-h-screen bg-gray-100 px-4'>
-      <div className='max-w-md w-full space-y-8'>
-        <form className='mt-8 space-y-6' onSubmit={handleSubmit}>
-          <input type='hidden' name='remember' defaultValue='true' />
-          <div className='rounded-md shadow-sm -space-y-px'>
+    <div className='flex items-center justify-center min-h-screen bg-gray-50 px-4'>
+      <div className='max-w-md w-full bg-white shadow-md rounded-md overflow-hidden'>
+        <div className='px-6 py-8'>
+          <h2 className='text-2xl font-semibold mb-4 text-center'>Login</h2>
+          <form className='space-y-4' onSubmit={handleSubmit}>
             <div>
               <label htmlFor='username' className='sr-only'>
                 Username
@@ -46,7 +49,7 @@ const LoginPage = () => {
                 name='username'
                 type='text'
                 required
-                className='appearance-none rounded-none relative block w-full px-3 py-2 border border-[#909090] placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-[indigo-500] focus:z-10 sm:text-sm'
+                className='w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500'
                 placeholder='Username'
                 onChange={handleInputChange}
               />
@@ -60,37 +63,23 @@ const LoginPage = () => {
                 name='password'
                 type='password'
                 required
-                className='appearance-none rounded-none relative block w-full px-3 py-2 border border-[#909090] placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm'
+                className='w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500'
                 placeholder='Password'
                 onChange={handleInputChange}
               />
             </div>
-          </div>
-
-          <div>
-            <button
-              type='submit'
-              className='group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#0265DC] hover:bg-[#4483d1] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-            >
-              Sign in
-            </button>
-          </div>
-
-          {message && (
-            <div className='text-center pt-2'>
-              <p
-                className={`text-sm font-semibold ${
-                  message.includes('successful')
-                    ? 'text-green-600'
-                    : 'text-red-600'
-                }`}
+            <div>
+              <button
+                type='submit'
+                className='w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600'
               >
-                {message}
-              </p>
+                Sign in
+              </button>
             </div>
-          )}
-        </form>
+          </form>
+        </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
