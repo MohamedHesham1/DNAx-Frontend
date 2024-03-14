@@ -8,11 +8,17 @@ const LoginPage = () => {
     username: '',
     password: '',
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setCredentials({ ...credentials, [name]: value });
   };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -36,12 +42,12 @@ const LoginPage = () => {
 
   return (
     <div className='flex items-center justify-center min-h-screen bg-gray-50 px-4'>
-      <div className='max-w-md w-full bg-white shadow-md rounded-md overflow-hidden'>
+      <div className='max-w-md w-full bg-white shadow-md overflow-hidden rounded-xl'>
         <div className='px-6 py-8'>
-          <h2 className='text-2xl font-semibold mb-4 text-center'>Login</h2>
-          <form className='space-y-4' onSubmit={handleSubmit}>
+          <h2 className='text-2xl font-bold mb-4 '>Sign In To Your Account</h2>
+          <form className='flex flex-col gap-8' onSubmit={handleSubmit}>
             <div>
-              <label htmlFor='username' className='sr-only'>
+              <label htmlFor='username' className='mb-2 block'>
                 Username
               </label>
               <input
@@ -55,23 +61,42 @@ const LoginPage = () => {
               />
             </div>
             <div>
-              <label htmlFor='password' className='sr-only'>
+              <label htmlFor='password' className='mb-2 block'>
                 Password
               </label>
-              <input
-                id='password'
-                name='password'
-                type='password'
-                required
-                className='w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500'
-                placeholder='Password'
-                onChange={handleInputChange}
-              />
+
+              <div className='flex items-center'>
+                <input
+                  id='password'
+                  name='password'
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  className='w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500'
+                  placeholder='Password'
+                  onChange={handleInputChange}
+                />
+                <button
+                  type='button'
+                  className='bg-[#E5E7EB] p-2 rounded-md ml-3'
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? (
+                    <div className='p-1'>
+                      <img className='' src='eye-closed.svg' alt='' />
+                    </div>
+                  ) : (
+                    <div className='p-1'>
+                      <img className='' src='eye-open.svg' alt='' />
+                    </div>
+                  )}
+                </button>
+              </div>
             </div>
+
             <div>
               <button
                 type='submit'
-                className='w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600'
+                className='w-full py-2 px-4 font-semibold text-white rounded-md bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50'
               >
                 Sign in
               </button>
