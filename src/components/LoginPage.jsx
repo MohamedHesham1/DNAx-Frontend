@@ -39,13 +39,14 @@ const LoginPage = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await Api.post(
-        "/auth/login",
-        { email: credentials.username, password: credentials.password },
-        { headers: { "Content-Type": "application/json" } }
-      );
-      const { access_token } = response.data;
-      handleLoginSuccess(access_token);
+      // const response = await Api.post(
+      //   "/auth/login",
+      //   { email: credentials.username, password: credentials.password },
+      //   { headers: { "Content-Type": "application/json" } }
+      // );
+      // const { access_token } = response.data;
+      // handleLoginSuccess(access_token);
+      window.location.href = VITE_AI_MODULE_BASE_URL;
     } catch (error) {
       handleLoginFailure(error);
     }
