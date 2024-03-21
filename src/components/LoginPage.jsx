@@ -1,142 +1,124 @@
 import { useState } from 'react';
-import { Enums } from '../services/enums'; // Import the enums
+import { Api } from '../services/api';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
+const { VITE_AI_MODULE_BASE_URL } = import.meta.env;
 
-const ModelForm = () => {
-  const [subject, setSubject] = useState('');
-  const [audience, setAudience] = useState('');
-  const [levelOfPracticalKnowledge, setLevelOfPracticalKnowledge] =
-    useState('');
-  const [model, setModel] = useState('');
-  const [language, setLanguage] = useState('');
+const LoginPage = () => {
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const [credentials, setCredentials] = useState({
+    username: '',
+    password: '',
+  });
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setCredentials((prevCredentials) => ({
+      ...prevCredentials,
+      [name]: value,
+    }));
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+
+  const handleLoginSuccess = (accessToken) => {
+    localStorage.setItem('token', accessToken);
+    toast.success('Login successful!');
+    navigate('/');
+  };
+
+  const handleLoginFailure = (error) => {
+    if (error.response) {
+      const { message } = error.response.data;
+      toast.error(message);
+    } else {
+      toast.error('An error occurred. Please try again.');
+    }
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-
-    console.log('Form submitted:', {
-      subject,
-      audience,
-      levelOfPracticalKnowledge,
-      model,
-      language,
-    });
-
-    // Submit the form data to your backend or perform the desired action here
+    try {
+      const response = await Api.post(
+        '/auth/login',
+        { email: credentials.username, password: credentials.password },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+      const { access_token } = response.data;
+      handleLoginSuccess(access_token);
+    } catch (error) {
+      handleLoginFailure(error);
+    }
   };
 
   return (
     <div className='flex items-center justify-center min-h-screen bg-gray-50 px-4'>
       <div className='max-w-md w-full bg-white shadow-md overflow-hidden rounded-xl'>
         <div className='px-6 py-8'>
-          <h2 className='text-2xl font-bold mb-4'>Model Form</h2>
+          <h2 className='text-2xl font-bold mb-4'>Sign In To Your Account</h2>
           <form className='flex flex-col gap-8' onSubmit={handleSubmit}>
             <div>
-              <label htmlFor='subject' className='mb-2 block'>
-                Subject
+              <label htmlFor='username' className='mb-2 block'>
+                Username
               </label>
-              <select
-                id='subject'
-                value={subject}
-                onChange={(e) => setSubject(e.target.value)}
+              <input
+                id='username'
+                name='username'
+                type='text'
+                required
+                value={credentials.username}
+                onChange={handleInputChange}
                 className='w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500'
-              >
-                <option value=''>Select Subject</option>
-                {Enums.Subject.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
+                placeholder='Username'
+              />
             </div>
-
             <div>
-              <label htmlFor='audience' className='mb-2 block'>
-                Audience
+              <label htmlFor='password' className='mb-2 block'>
+                Password
               </label>
-              <select
-                id='audience'
-                value={audience}
-                onChange={(e) => setAudience(e.target.value)}
-                className='w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500'
-              >
-                <option value=''>Select Audience</option>
-                {Enums.Audience.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
+              <div className='flex items-center'>
+                <input
+                  id='password'
+                  name='password'
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  value={credentials.password}
+                  onChange={handleInputChange}
+                  className='w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500'
+                  placeholder='Password'
+                />
+                <button
+                  type='button'
+                  className='bg-[#E5E7EB] p-2 rounded-md ml-3'
+                  onClick={togglePasswordVisibility}
+                >
+                  <img
+                    className='p-1'
+                    src={showPassword ? 'eye-closed.svg' : 'eye-open.svg'}
+                    alt=''
+                  />
+                </button>
+              </div>
             </div>
-
-            <div>
-              <label htmlFor='levelOfPracticalKnowledge' className='mb-2 block'>
-                Level of Practical Knowledge
-              </label>
-              <select
-                id='levelOfPracticalKnowledge'
-                value={levelOfPracticalKnowledge}
-                onChange={(e) => setLevelOfPracticalKnowledge(e.target.value)}
-                className='w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500'
-              >
-                <option value=''>Select Level</option>
-                {Enums.LevelOfPracticalKnowledge.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label htmlFor='model' className='mb-2 block'>
-                Model
-              </label>
-              <select
-                id='model'
-                value={model}
-                onChange={(e) => setModel(e.target.value)}
-                className='w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500'
-              >
-                <option value=''>Select Model</option>
-                {Enums.Model.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label htmlFor='language' className='mb-2 block'>
-                Language
-              </label>
-              <select
-                id='language'
-                value={language}
-                onChange={(e) => setLanguage(e.target.value)}
-                className='w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500'
-              >
-                <option value=''>Select Language</option>
-                {Enums.Language.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
             <div>
               <button
                 type='submit'
                 className='w-full py-2 px-4 font-semibold text-white rounded-md bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50'
               >
-                Submit
+                Sign in
               </button>
             </div>
           </form>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
 
-export default ModelForm;
+export default LoginPage;

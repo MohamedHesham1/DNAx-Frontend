@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 function ProtectedRoute({ children }) {
   const navigate = useNavigate();
-  const isLoggedIn = true;
+  const isLoggedIn = localStorage.getItem('token');
 
   useEffect(() => {
     if (!isLoggedIn) {
