@@ -3,7 +3,6 @@ import { Api } from '../services/api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
-const { VITE_AI_MODULE_BASE_URL } = import.meta.env;
 
 const LoginPage = () => {
   const navigate = useNavigate();

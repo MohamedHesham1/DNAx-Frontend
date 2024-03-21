@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { VITE_API_BASE_URL } from '../configs/api';
 
-const token = localStorage.getItem('userToken');
+const token = localStorage.getItem('token');
 const apiInstance = axios.create({
   baseURL: VITE_API_BASE_URL,
   headers: {
