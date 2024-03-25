@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Api } from '../services/api';
 
 function ProtectedRoute({ children }) {
   const navigate = useNavigate();
@@ -8,8 +9,12 @@ function ProtectedRoute({ children }) {
   useEffect(() => {
     if (!isLoggedIn) {
       navigate('/login', { replace: true });
+    } else {
+      // Initialize the Api module with the token
+      Api.setToken(isLoggedIn);
     }
   }, [isLoggedIn]);
+
   return children;
 }
 
