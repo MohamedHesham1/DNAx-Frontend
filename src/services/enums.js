@@ -155,5 +155,9 @@ export const Enums = Object.freeze({
       value: 'English',
       label: 'English',
     },
+    {
+      value: 'Arabic translation from English',
+      label: 'Arabic translation from English',
+    },
   ]),
 });
