@@ -71,7 +71,6 @@ const ModelForm = () => {
                 value={topic}
                 onChange={(e) => setTopic(e.target.value)}
                 className="mt-1 bg-[#EFEFEF] block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2"
-                required
               />
             </div>
 
@@ -87,7 +86,6 @@ const ModelForm = () => {
                 value={subject}
                 onChange={(e) => setSubject(e.target.value)}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2"
-                required
               >
                 <option value="">Select Subject</option>
                 {Enums.Subject.map((option) => (
@@ -111,7 +109,6 @@ const ModelForm = () => {
                 value={otherSubject}
                 onChange={(e) => setOtherSubject(e.target.value)}
                 className="mt-1 bg-[#EFEFEF] block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2"
-                required
               />
             </div>
 
