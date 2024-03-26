@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Enums } from "../services/enums";
 import { Api } from "../services/api";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const ModelForm = () => {
   const navigate = useNavigate();
@@ -9,6 +9,7 @@ const ModelForm = () => {
   const [topic, setTopic] = useState("");
   const [subject, setSubject] = useState("");
   const [audience, setAudience] = useState("");
+  const [introType, setIntroType] = useState("");
   const [levelOfPracticalKnowledge, setLevelOfPracticalKnowledge] =
     useState("");
 
@@ -29,6 +30,7 @@ const ModelForm = () => {
       other_subject: otherSubject,
       audience,
       level_of_practical_knowledge: levelOfPracticalKnowledge,
+      intro_type: introType,
       model,
       language,
     };
@@ -41,7 +43,7 @@ const ModelForm = () => {
     }
   };
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
     navigate(`/login`);
     setIsLoggedIn(false);
   };
@@ -55,6 +57,7 @@ const ModelForm = () => {
     setLevelOfPracticalKnowledge("");
     setModel("");
     setLanguage("");
+    setIntroType("");
     setFormData({});
   };
 
@@ -92,6 +95,28 @@ const ModelForm = () => {
                 onChange={(e) => setTopic(e.target.value)}
                 className="mt-1 bg-[#EFEFEF] block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2"
               />
+            </div>
+
+            <div className="mb-4">
+              <label
+                htmlFor="introType"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Introduction Type:
+              </label>
+              <select
+                id="introType"
+                value={introType}
+                onChange={(e) => setIntroType(e.target.value)}
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2"
+              >
+                <option value="">Select</option>
+                {Enums.IntroType.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="mb-4">

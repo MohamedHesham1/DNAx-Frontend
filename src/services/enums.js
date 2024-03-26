@@ -164,4 +164,23 @@ export const Enums = Object.freeze({
       label: 'Arabic translation from English',
     },
   ]),
+    // intro_type
+    IntroType: defineEnum([
+      {
+        value: 'Normal',
+        label: 'Normal',
+      },
+      {
+        value: 'story or scenarios form',
+        label: 'story or scenarios form',
+      },
+      {
+        value: 'facts & numbers',
+        label: 'facts & numbers',
+      },
+      {
+        value: 'Problem-Oriented',
+        label: 'Problem-Oriented',
+      },
+    ]),
 });
