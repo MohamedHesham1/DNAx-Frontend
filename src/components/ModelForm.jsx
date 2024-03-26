@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { Enums } from "../services/enums";
 import { Api } from "../services/api";
+import { useNavigate } from 'react-router-dom';
 
 const ModelForm = () => {
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [topic, setTopic] = useState("");
   const [subject, setSubject] = useState("");
   const [audience, setAudience] = useState("");
@@ -37,6 +40,11 @@ const ModelForm = () => {
       setLoading(false);
     }
   };
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate(`/login`);
+    setIsLoggedIn(false);
+  };
 
   useEffect(() => {}, [formData]);
 
@@ -52,6 +60,18 @@ const ModelForm = () => {
 
   return (
     <div className="mx-auto">
+      <header className="py-4 px-6 bg-gray-600 text-white flex justify-between items-center">
+        <h1 className="text-2xl font-bold">DNAx</h1>
+        {isLoggedIn && (
+          <button
+            onClick={handleLogout}
+            className="px-4 py-2 bg-red-500 hover:bg-red-600 rounded-md shadow-md text-white font-medium focus:outline-none focus:ring-2 focus:ring-red-500"
+          >
+            Logout
+          </button>
+        )}
+      </header>
+
       {!loading ? (
         <div className="flex flex-col my-16 px-24 items-start h-full md:flex-row space-y-4 md:space-y-0">
           <form
