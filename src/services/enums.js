@@ -83,6 +83,10 @@ export const Enums = Object.freeze({
       value: 'Retail and wholesale trade',
       label: 'Retail and wholesale trade',
     },
+    {
+      value: 'Other (write a subject)',
+      label: 'Other (write a subject)',
+    },
   ]),
   // Audience
   Audience: defineEnum([

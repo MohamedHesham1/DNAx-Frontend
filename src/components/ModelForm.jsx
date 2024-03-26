@@ -96,21 +96,23 @@ const ModelForm = () => {
               </select>
             </div>
 
-            <div className="mb-4">
-              <label
-                htmlFor="otherSubject"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Other subject:
-              </label>
-              <input
-                type="text"
-                id="otherSubject"
-                value={otherSubject}
-                onChange={(e) => setOtherSubject(e.target.value)}
-                className="mt-1 bg-[#EFEFEF] block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2"
-              />
-            </div>
+            {subject === "Other (write a subject)" && (
+              <div className="mb-4">
+                <label
+                  htmlFor="otherSubject"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Other subject:
+                </label>
+                <input
+                  type="text"
+                  id="otherSubject"
+                  value={otherSubject}
+                  onChange={(e) => setOtherSubject(e.target.value)}
+                  className="mt-1 bg-[#EFEFEF] block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2"
+                />
+              </div>
+            )}
 
             <div className="mb-4">
               <label
