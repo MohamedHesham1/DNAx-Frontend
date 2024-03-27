@@ -36,6 +36,7 @@ const ModelForm = () => {
       intro_type: introType,
       model,
       language,
+      tester
     };
 
     const { data } = await Api.post("/api/process", { ...payload });
